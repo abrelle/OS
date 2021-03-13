@@ -1,0 +1,2 @@
+# OS
+dejau pirma zingsni ;)
