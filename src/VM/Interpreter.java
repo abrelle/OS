@@ -4,13 +4,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Interpretator {
+public class Interpreter {
     private Scanner scanner = null;
     private ArrayList<String> dataSegment = new ArrayList<String>(100);
     private ArrayList<String> codeSegment = new ArrayList<String>(100);
     private ArrayList<String> code = new ArrayList<String>(100);
 
-    Interpretator(String fileLocation)
+    Interpreter(String fileLocation)
     {
         try {
             File file = new File(fileLocation);
