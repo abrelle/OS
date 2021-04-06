@@ -10,15 +10,17 @@ public class Stack {
     }
 
     public void Push() throws Exception {
-        // set word memory
+        memory.setWord(cpu.getRL(),cpu.getSP());
         cpu.increaseSP();
     }
 
     public void Pop() throws Exception {
         cpu.decreaseSP();
-        // set
+        cpu.setRL(memory.getWord(cpu.getSP()));
     }
 
-    // func to get nth element !!!!!
-    // ...
+    public Word getNthElement(int n) throws Exception {
+        Word sp = cpu.getSP();
+        return memory.getWord(sp.add(n));
+    }
 }
