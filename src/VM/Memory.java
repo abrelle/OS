@@ -17,4 +17,18 @@ public class Memory {
         }
     }
 
+    public Word getWord(int virtualAddress) throws Exception
+    {
+        if(virtualAddress>Constants.WORD_NUMBER || virtualAddress<0)
+        {
+            throw new Exception("Not existing address");
+        }
+
+        int block = virtualAddress/Constants.BLOCK_NUMBER;
+        int word = virtualAddress % Constants.BLOCK_NUMBER;
+        return vmMemory[block][word];
+    }
+
+
+
 }
