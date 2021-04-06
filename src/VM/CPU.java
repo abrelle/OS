@@ -17,8 +17,10 @@ public class CPU {
     // ...
     private final Word SS = new Word(Constants.STACK_SEGMENT);
 
-    CPU() throws Exception {
-    // add memory
+    private final Memory memory;
+
+    CPU(Memory memory) throws Exception {
+        this.memory = memory;
     }
 
     public Word getSP() throws Exception {
