@@ -9,10 +9,10 @@ public class Constants {
 
     // kur prasideda segmentai (kol kas i tris dalis parasyta)
     public static final int STACK_SEGMENT = 0;
-    public static final int DATA_SEGMENT = 21845;
-    public static final int CODE_SEGMENT = 43690;
+    public static final int DATA_SEGMENT = 43009;
+    public static final int CODE_SEGMENT = 104450;
 
-    public static final long MAX_NUMBER = 16777215;
+    public static final long MAX_NUMBER = 393219;
 
     public static final int F_VALUE = 16;
     public static final int FF_VALUE = 256;
