@@ -15,66 +15,70 @@ public class Commands {
     }
 
     public void execute(String command) throws Exception {
-        if(command.contains("ADD"))
+        if(command.contains("AD"))
         {
-            ADD();
-        }else if(command.contains("SUB")){
-            SUB();
-        }else if(command.contains("MUL")){
-            MUL();
-        }else if(command.contains("DIV")){
-            DIV();
+            AD();
+        }else if(command.contains("SB")){
+            SB();
+        }else if(command.contains("ML")){
+            ML();
+        }else if(command.contains("DV")){
+            DV();
+        }else if(command.contains("INC")){
+           // CM();
+        }else if(command.contains("DEC")){
+           // CM();
+        }else if(command.contains("CLR")){
+            //CM();
+        }else if(command.contains("MD")){
+           // CM();
         }else if(command.contains("CM")){
-            CM();
-        }else if(command.contains("CMR")){
-            CMR();
-        }else if(command.contains("JUMP")){
-            JUMP();
-        }else if(command.contains("JUMPR")){
-            JUMPR();
-        }else if(command.contains("JA")){
-            JA();
-        }else if(command.contains("JAR")){
-            JAR();
-        }else if(command.contains("JBR")){
-            JBR();
+           // CM();
+        }else if(command.contains("JH")){
+           // CMR();
         }else if(command.contains("JE")){
-            JE();
-        }else if(command.contains("JER")){
-            JER();
-        }else if(command.contains("PUSH")){
-            PUSH();
-        }else if(command.contains("POP")){
-            POP();
-        }else if(command.contains("PUSHAL")){
-            POPALL();
-        }else if(command.contains("POPALL")){
-            POPALL();
-        }else if(command.contains("SWAP")){
-            SWAP();
-        }else if(command.contains("LB")){
-            LOADB(new Word(command.substring(2), Word.WORD_TYPE.NUMERIC));
-        }else if(command.contains("LW")){
-            LOADW(new Word(command.substring(2), Word.WORD_TYPE.NUMERIC));
-        }else if(command.contains("SV")){
-            SAVE(new Word(command.substring(2), Word.WORD_TYPE.NUMERIC));
-        }else if(command.contains("GT")){
-            GET(new Word(command.substring(2), Word.WORD_TYPE.NUMERIC));
-        }else if(command.contains("PT")){
-            PUT(new Word(command.substring(2), Word.WORD_TYPE.NUMERIC));
+           // JUMP();
+        }else if(command.contains("JN")){
+           // JUMPR();
+        }else if(command.contains("JL")){
+           // JA();
+        }else if(command.contains("JM")){
+           // JA();
+        }else if(command.contains("GIC")){
+           // JA();
         }else if(command.contains("HALT")){
-            HALT();
-        }else if(command.contains("PRINTR")){
-            PRINTR();
+            //JA();
+        }else if(command.contains("SM")){
+            //PUSH();
+        }else if(command.contains("SV")){
+            //PUSH();
+        }else if(command.contains("LS")){
+            // POP();
+        }else if(command.contains("PO")){
+           // POP();
+        }else if(command.contains("SD")){
+            // POP();
+        }else if(command.contains("GD")){
+            // POP();
+        }else if(command.contains("PD")){
+            // POP();
+        }else if(command.contains("AND")){
+            // POP();
+        }else if(command.contains("OR")){
+            // POP();
+        }else if(command.contains("XOR")){
+            // POP();
+        }else if(command.contains("NOT")){
+            // POP();
         }else {
             System.out.print("Not found");
         }
     }
 
     // komandos
-    private void ADD()
+    private void AD()
     {
-        System.out.println("ADD()");
+        System.out.println("AD()");
         try {
             stack.Pop();
             int op1 = cpu.getRL().getNumber();
@@ -91,9 +95,9 @@ public class Commands {
             e.printStackTrace();
         }
     }
-    private void SUB()
+    private void SB()
     {
-        System.out.println("SUB()");
+        System.out.println("SB()");
         try {
             stack.Pop();
             int op1 = cpu.getRL().getNumber();
@@ -106,9 +110,9 @@ public class Commands {
             e.printStackTrace();
         }
     }
-    private void MUL()
+    private void ML()
     {
-        System.out.println("MUL()");
+        System.out.println("ML()");
         try {
             stack.Pop();
             int op1 = cpu.getRL().getNumber();
@@ -125,9 +129,9 @@ public class Commands {
             e.printStackTrace();
         }
     }
-    private void DIV()
+    private void DV()
     {
-        System.out.println("DIV()");
+        System.out.println("DV()");
         try {
             stack.Pop();
             int op1 = cpu.getRL().getNumber();
