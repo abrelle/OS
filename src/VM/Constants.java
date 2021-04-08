@@ -20,14 +20,6 @@ public class Constants {
     public static final int FFFF_VALUE = 65536;
     public static final int FFFFF_VALUE = 1048576;
 
-    public enum C_VALUES
-    {
-        EQUAL,
-        LESS,
-        MORE,
-        SYMBOLS,
-        NUMBERS,
-    }
 
     public enum FILE_SEG
     {
