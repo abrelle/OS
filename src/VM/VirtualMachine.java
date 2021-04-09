@@ -2,65 +2,69 @@ package VM;
 
 import java.util.ArrayList;
 
+import static VM.Constants.WORD_LENGTH;
+
 public class VirtualMachine {
-    private CPU cpu = null;
+    private VM_CPU cpu = null;
     private Memory memory = null;
     private Commands interpreter = null;
 
-    VirtualMachine()
-    {
+    VirtualMachine() {
         try {
             memory = new Memory();
-            cpu = new CPU(memory);
-            interpreter = new Commands(cpu,memory);
+            cpu = new VM_CPU(memory);
+            interpreter = new Commands(cpu, memory);
             uploadCode();
+
             doYourMagic();
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void doYourMagic()
-    {
+    private void doYourMagic() {
         int i = 0;
-        while (i<10)
-        {
+        int shift = 0;
+        while (true)
             try {
-                String command = memory.getWord(cpu.getCS(cpu.getIC())).getASCIIFormat();
-
-
+                String command = memory.getCommand(cpu.getCS(cpu.getIC()), shift);
                 interpreter.execute(command);
                 cpu.increaseIC();
+                shift = (shift + 2) % WORD_LENGTH;
+                if(shift==0){
+                    cpu.increaseIC();
+                }
                 i++;
-                if(command.contains("HALT"))
-                {
+//                if(i == 3){
+//                    System.exit(5);
+//                }
+                if (command.contains("HALT")) {
+                    memory.printInfo();
                     return;
                 }
-            }catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
     }
 
-    private void uploadCode()
-    {
+    private void uploadCode() {
         try {
-            Interpreter interpreter =  new Interpreter("prog.txt");
+            Interpreter interpreter = new Interpreter("prog.txt");
             interpreter.read();
             interpreter.interpreter();
             ArrayList<String> dataSegment = interpreter.getDataSegment();
-            for (int i = 0; i<dataSegment.size();i++)
-            {
-                cpu.setDS(new Word(i), new Word(dataSegment.get(i),Word.WORD_TYPE.NUMERIC));
+            for (int i = 0; i < dataSegment.size(); i++) {
+                cpu.setDS(new Word(i), new Word(dataSegment.get(i), Word.WORD_TYPE.NUMERIC));
             }
-            ArrayList<String>codeSegment = interpreter.getCodeSegment();
-            for (int i = 0; i<codeSegment.size();i++)
-            {
-                cpu.setCS(new Word(i), new Word(codeSegment.get(i), Word.WORD_TYPE.SYMBOLIC));
+            ArrayList<String> codeSegment = interpreter.getCodeSegment();
+
+            StringBuilder code = new StringBuilder();
+            for (String s : codeSegment) {
+                code.append(s);
             }
-        }catch (Exception e){
+            cpu.setCS(new Word(0), code.toString());
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
