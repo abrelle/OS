@@ -2,10 +2,17 @@ package VM;
 
 public class Constants {
     // vartotojo atmintis
-    public static final int WORD_LENGTH = 6;
-    public static final int BLOCK_NUMBER = 256;
+    public static final int WORD_LENGTH = 4;
+    public static final int COMMAND_LENGTH = 6;
+    public static final int REAL_MEMORY_BLOCK_NUMBER = 256;
     public static final int BLOCK_LENGTH = 256;
-    public static final int WORD_NUMBER = 65535; // 256*256
+    public static final int WORD_NUMBER = 65536; // 256*256
+
+    //VIRTUALIOS MASINOS ATMINTIS
+    public static final int VIRTUAL_MEMORY_BLOCK_NUMBER = 32;
+    public static final int VIRTUAL_WORD_NUMBER = 8192; // 32*256
+    public static final int VIRTUAL_MEMORY_WORD_NUMBER = 4096; // 16*256
+
 
     // kur prasideda segmentai (kol kas i tris dalis parasyta)
 //    public static final int STACK_SEGMENT = 0; //wordlenght*blocklenght*blocknumber
@@ -30,16 +37,14 @@ public class Constants {
     public static final int ZERO_FLAG_INDEX = 6;
     public static final int OVERFLOW_FLAG_INDEX = 7;
 
-    public enum FILE_SEG
-    {
+    public enum FILE_SEG {
         DATSEG,
         CODSEG,
         STACKSEG
     }
 
 
-    public enum INTERRUPTION
-    {
+    public enum INTERRUPTION {
         HALT,
     }
 }
