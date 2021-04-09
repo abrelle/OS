@@ -2,8 +2,10 @@ package VM;
 
 import java.util.ArrayList;
 
+import static VM.Constants.WORD_LENGTH;
+
 public class VirtualMachine {
-    private CPU cpu = null;
+    private VM_CPU cpu = null;
     private Memory memory = null;
     private Commands interpreter = null;
 
@@ -11,9 +13,10 @@ public class VirtualMachine {
     {
         try {
             memory = new Memory();
-            cpu = new CPU(memory);
-            interpreter = new Commands(cpu,memory);
+            cpu = new VM_CPU(memory);
+            interpreter = new Commands(cpu, memory);
             uploadCode();
+
             doYourMagic();
 
         }catch (Exception e) {
@@ -27,11 +30,13 @@ public class VirtualMachine {
         while (i<10)
         {
             try {
-                String command = memory.getWord(cpu.getCS(cpu.getIC())).getASCIIFormat();
-
-
+                String command = memory.getCommand(cpu.getCS(cpu.getIC()), shift);
                 interpreter.execute(command);
                 cpu.increaseIC();
+                shift = (shift + 2) % WORD_LENGTH;
+                if(shift==0){
+                    cpu.increaseIC();
+                }
                 i++;
                 if(command.contains("HALT"))
                 {
