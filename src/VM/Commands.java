@@ -85,7 +85,7 @@ public class Commands {
             int op1 = stack.pop().getNumber();
             int op2 = stack.pop().getNumber();
             int result = op1 + op2;
-            if (result > Constants.MAX_WORD_SIZE_NUMBER ) {
+            if (result > Constants.MAX_WORD_SIZE_NUMBER) {
                 System.out.println("AD Overflow");
             } else {
                 stack.push(new Word(result));
@@ -300,7 +300,6 @@ public class Commands {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
 //    private void SWAP() {
