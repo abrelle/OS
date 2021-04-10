@@ -2,7 +2,7 @@ package VM;
 
 import java.util.ArrayList;
 
-import static VM.Constants.WORD_LENGTH;
+import static VM.Constants.*;
 
 public class VirtualMachine {
     private VM_CPU cpu = null;
@@ -11,7 +11,7 @@ public class VirtualMachine {
 
     VirtualMachine() {
         try {
-            memory = new Memory();
+            memory = new Memory(VIRTUAL_MEMORY_BLOCK_NUMBER, BLOCK_LENGTH);
             cpu = new VM_CPU(memory);
             interpreter = new Commands(cpu, memory);
             uploadCode();

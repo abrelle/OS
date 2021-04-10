@@ -18,6 +18,7 @@ public class Commands {
     }
 
     public void execute(String command) throws Exception {
+        System.out.println("Komanda " + command);
         if (command.contains("AD")) {
             AD();
         } else if (command.contains("SB")) {
@@ -297,6 +298,29 @@ public class Commands {
         try {
             stack.push(memory.getWord(cpu.getDS(wordshift)));
             memory.printStack();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void GD() {
+        System.out.println("GD");
+        try {
+            Word bufferSize = stack.getPreviousElement(0);
+            Word startAddress = stack.getPreviousElement(-1);
+            /*for (startAddress.getNumber()){}
+            stack.pop(memory.getWord());*/
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void PD() {
+        System.out.println("PD");
+        try {
+            Word bufferSize = stack.getPreviousElement(0);
+            Word startAddress = stack.getPreviousElement(-1);
+            //stack.push();
         } catch (Exception e) {
             e.printStackTrace();
         }

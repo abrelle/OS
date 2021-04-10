@@ -75,6 +75,7 @@ public class Memory{
 
 
     public void setWord(Word word, int virtualAddress) throws Exception {
+
         getWord(virtualAddress).setWord(word);
     }
 
@@ -89,8 +90,11 @@ public class Memory{
         }
         for (int i = 0; i < value.length(); i += WORD_LENGTH){
             Word word = new Word(value.substring(i, i + WORD_LENGTH), Word.WORD_TYPE.SYMBOLIC);
+     // Word[] splitWord = word.splitWord();
             getWord(virtualAddress + addrCounter).setWord(word);
             addrCounter++;
+//            getWord(virtualAddress + addrCounter).setWord(splitWord[1]);
+//            addrCounter++;
         }
     }
 
@@ -107,6 +111,25 @@ public class Memory{
             command = words.substring(shift);
         }
         return command;
+    }
+
+    public String getASCIIFormat(String stringValue) {
+        int[] content = stringToIntArray(stringValue);
+        String result = "";
+        for (int A : content) {
+            result += ((char) A);
+        }
+        return result;
+    }
+
+    public int[] stringToIntArray(String stringValue){
+        int[] arr = new int [stringValue.length()/2];
+        int counter = 0;
+        for(int i = 0; i < stringValue.length(); i+=2){
+            arr[counter] = Integer.parseInt(stringValue.substring(i, i+2));
+            counter++;
+        }
+        return arr;
     }
 
     private String createWord(int val) {
@@ -136,7 +159,10 @@ public class Memory{
 */
     public void printInfo(){
         for (int i = 0; i < VIRTUAL_MEMORY_BLOCK_NUMBER; i++) {
-            System.out.println(Arrays.toString(vmMemory[i]));
+            for (int j = 0; j < BLOCK_LENGTH; j++){
+                System.out.print(vmMemory[i][j].getHEXFormat() + " ");
+            }
+           System.out.println();
         }
     }
 
