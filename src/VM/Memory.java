@@ -4,10 +4,15 @@ import java.util.Arrays;
 
 import static VM.Constants.*;
 
-public class Memory {
-    private final Word[][] vmMemory;
+public class Memory{
+    private int VIRTUAL_MEMORY_BLOCK_NUMBER = 0;
+    private int BLOCK_LENGTH = 0;
+    private int WORD_NUMBER = 0;
+    private Word[][] vmMemory = null;
 
-    Memory() {
+    Memory(int VIRTUAL_MEMORY_BLOCK_NUMBER, int BLOCK_LENGTH) {
+        this.BLOCK_LENGTH = BLOCK_LENGTH;
+        this.VIRTUAL_MEMORY_BLOCK_NUMBER = VIRTUAL_MEMORY_BLOCK_NUMBER;
         vmMemory = new Word[VIRTUAL_MEMORY_BLOCK_NUMBER][BLOCK_LENGTH];
         for (int i = 0; i < VIRTUAL_MEMORY_BLOCK_NUMBER; i++) {
             for (int j = 0; j < BLOCK_LENGTH; j++) {
@@ -18,6 +23,36 @@ public class Memory {
                 }
             }
         }
+    }
+
+    public boolean checkIfBlockEmpty(int block) throws Exception {
+        if (block>=VIRTUAL_MEMORY_BLOCK_NUMBER) throw new Exception("Not existing block");
+        for (int i=0;i<BLOCK_LENGTH;i++){
+            if(vmMemory[block][i].getNumber()!=0) return false;
+        }
+        return true;
+    }
+
+    public void cleanBlock(int block) throws Exception {
+        if (block>=VIRTUAL_MEMORY_BLOCK_NUMBER) throw new Exception("Not existing block");
+        for (int i=0;i<BLOCK_LENGTH;i++){
+            vmMemory[block][i].setWord(new Word(0));
+        }
+    }
+
+    public Word[] getBlock(int block)throws Exception {
+        if (block>=VIRTUAL_MEMORY_BLOCK_NUMBER) throw new Exception("Not existing block");
+        return vmMemory[block];
+    }
+
+    public void setBlock(int block, Word[] data)throws Exception {
+        if (block>=VIRTUAL_MEMORY_BLOCK_NUMBER) throw new Exception("Not existing block");
+        if (data.length!=BLOCK_LENGTH) throw new Exception("BAD block length");
+        vmMemory[block]= data;
+    }
+
+    public int getBlockBeginAddress(int block){
+        return block*BLOCK_LENGTH;
     }
 
     public Word getWord(int virtualAddress) throws Exception {
