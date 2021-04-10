@@ -2,25 +2,32 @@ package VM;
 
 public class Stack {
     private final Memory memory;
-    private final CPU cpu;
+    private final VM_CPU cpu;
 
-    Stack(Memory memory, CPU cpu) {
+    Stack(Memory memory, VM_CPU cpu) {
         this.memory = memory;
         this.cpu = cpu;
     }
 
-    public void Push() throws Exception {
-        memory.setWord(cpu.getRL(),cpu.getSP());
+    public void push(Word word) throws Exception {
+        memory.setWord(word,cpu.getSP());
         cpu.increaseSP();
     }
 
-    public void Pop() throws Exception {
+    public Word pop() throws Exception {
         cpu.decreaseSP();
-        cpu.setRL(memory.getWord(cpu.getSP()));
+        Word word = memory.getWord(cpu.getSP());
+        return word;
     }
 
     public Word getNthElement(int n) throws Exception {
-        Word sp = cpu.getSP();
-        return memory.getWord(sp.add(n));
+        Word SP = cpu.getSP();
+        //Word SS = cpu.getSP();
+        return memory.getWord(SP.add(n));
+    }
+
+    public Word getPreviousElement(int n) throws Exception {
+        Word SP = cpu.getSP();
+        return memory.getWord(SP.add(n));
     }
 }
