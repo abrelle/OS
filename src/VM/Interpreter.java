@@ -29,8 +29,8 @@ public class Interpreter {
     }
 
     public void interpreter() throws Exception {
-        if(!code.get(0).equals(Constants.FILE_SEG.DATSEG.name())) {throw new Exception("NO DATSEG");}
-        int indexOfCodeSeg = code.indexOf(Constants.FILE_SEG.CODSEG.name());
+        if(!code.get(0).equals(Constants.FILE_SEG.$BDS.name())) {throw new Exception("NO DATSEG");}
+        int indexOfCodeSeg = code.indexOf(Constants.FILE_SEG.$BCS.name());
         if(indexOfCodeSeg == -1){throw new Exception("NO CODSEG");}
         dataSegment.addAll(code.subList(1,indexOfCodeSeg));
         codeSegment.addAll(code.subList(indexOfCodeSeg+1,code.size()));
