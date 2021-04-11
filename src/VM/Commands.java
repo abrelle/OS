@@ -18,7 +18,6 @@ public class Commands {
     }
 
     public void execute(String command) throws Exception {
-        System.out.println("Komanda " + command);
         if (command.contains("AD")) {
             AD();
         } else if (command.contains("SB")) {
@@ -86,7 +85,7 @@ public class Commands {
             int op1 = stack.pop().getNumber();
             int op2 = stack.pop().getNumber();
             int result = op1 + op2;
-            if (result > Constants.MAX_WORD_SIZE_NUMBER) {
+            if (result > Constants.MAX_WORD_SIZE_NUMBER ) {
                 System.out.println("AD Overflow");
             } else {
                 stack.push(new Word(result));
@@ -301,29 +300,7 @@ public class Commands {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
 
-    private void GD() {
-        System.out.println("GD");
-        try {
-            Word bufferSize = stack.getPreviousElement(0);
-            Word startAddress = stack.getPreviousElement(-1);
-            /*for (startAddress.getNumber()){}
-            stack.pop(memory.getWord());*/
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void PD() {
-        System.out.println("PD");
-        try {
-            Word bufferSize = stack.getPreviousElement(0);
-            Word startAddress = stack.getPreviousElement(-1);
-            //stack.push();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
 //    private void SWAP() {

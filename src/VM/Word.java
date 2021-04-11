@@ -1,8 +1,6 @@
 package VM;
 
 
-import static VM.Constants.WORD_LENGTH;
-
 public class Word {
 
     private WORD_TYPE type;
@@ -19,13 +17,8 @@ public class Word {
         createNumericWord(word);
     }
 
-    public Word(int[] content) throws Exception {
-        this.type = WORD_TYPE.SYMBOLIC;
-        this.content = content;
-    }
-
     private String prepareWord(String word) {
-        while (word.length() < WORD_LENGTH) {
+        while (word.length() < Constants.WORD_LENGTH) {
             word = "0" + word;
         }
         return word;
@@ -33,8 +26,8 @@ public class Word {
 
     private void createNumericWord(String word) throws Exception {
         word = prepareWord(word);
-        if (word.length() != WORD_LENGTH) throw new Exception("Bad length");
-        for (int i = 0; i < WORD_LENGTH; i++) {
+        if (word.length() != Constants.WORD_LENGTH) throw new Exception("Bad length");
+        for (int i = 0; i < Constants.WORD_LENGTH; i++) {
             int number = Integer.parseInt(String.valueOf(word.charAt(i)), 16);
             if (number > 15) throw new Exception("Not hex");
             content[i] = number;
@@ -52,8 +45,8 @@ public class Word {
     }
 
     private void createSymbolicWord(String word) throws Exception {
-        if (word.length() != WORD_LENGTH) throw new Exception("Bad length for symbolic word");
-        for (int i = 0; i < WORD_LENGTH; i++) {
+        if (word.length() != Constants.WORD_LENGTH) throw new Exception("Bad length for symbolic word");
+        for (int i = 0; i < Constants.WORD_LENGTH; i++) {
             content[i] = word.charAt(i);
         }
     }
@@ -76,7 +69,7 @@ public class Word {
 
     public String getString() {
         String result = "";
-        for (int i = 0; i < WORD_LENGTH; i++) {
+        for (int i = 0; i < Constants.WORD_LENGTH; i++) {
             result += content[i];
         }
         return result;
@@ -122,27 +115,6 @@ public class Word {
             default:
                 return getINTFormat();
         }
-    }
-
-    public Word[] splitWord() throws Exception {
-        int[] value1 = new int [WORD_LENGTH];
-        int[] value2 = new int [WORD_LENGTH];
-
-
-        value1[0] = content[0]/10;
-        value1[1] = content[0]%10;
-        value1[2] = content[1]/10;
-        value1[3] = content[1]%10;
-
-        value2[0] = content[2]/10;
-        value2[1] = content[2]%10;
-        value2[2] = content[3]/10;
-        value2[3] = content[3]%10;
-
-        Word[] wordArr = new Word[2];
-        wordArr[0] = new Word(value1);;
-        wordArr[1] = new Word(value2);
-        return wordArr;
     }
 
     public enum WORD_TYPE {

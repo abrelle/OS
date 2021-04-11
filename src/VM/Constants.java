@@ -38,8 +38,9 @@ public class Constants {
     public static final int OVERFLOW_FLAG_INDEX = 7;
 
     public enum FILE_SEG {
-        $BDS,
-        $BCS,
+        DATSEG,
+        CODSEG,
+        STACKSEG
     }
 
 
