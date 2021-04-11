@@ -88,9 +88,9 @@ public class Memory{
         while(value.length() % WORD_LENGTH != 0){
             value += '0';
         }
-        for (int i = 0; i < value.length(); i += WORD_LENGTH){
+        for (int i = 0; i < value.length(); i += WORD_LENGTH) {
             Word word = new Word(value.substring(i, i + WORD_LENGTH), Word.WORD_TYPE.SYMBOLIC);
-     // Word[] splitWord = word.splitWord();
+            // Word[] splitWord = word.splitWord();
             getWord(virtualAddress + addrCounter).setWord(word);
             addrCounter++;
 //            getWord(virtualAddress + addrCounter).setWord(splitWord[1]);
@@ -98,17 +98,17 @@ public class Memory{
         }
     }
 
-    public String getCommand(Word virtualAddress, int shift) throws Exception {
-        Word word1 = getWord(virtualAddress.getNumber());
-        Word word2 = getWord(virtualAddress.getNumber() + 1);
+    public String getCommand(Word csAddress, Word icAddress) throws Exception {
+        int shift = icAddress.getNumber() * COMMAND_LENGTH / WORD_LENGTH;
+        Word word1 = getWord(csAddress.getNumber() + shift);
+        Word word2 = getWord(csAddress.getNumber() + shift + 1);
         String words = word1.getASCIIFormat() + word2.getASCIIFormat();
         String command = "";
 
-        if(shift < 2){
+        if (icAddress.getNumber() * COMMAND_LENGTH % WORD_LENGTH == 0) {
             command = words.substring(0, COMMAND_LENGTH);
-        }
-        else{
-            command = words.substring(shift);
+        } else {
+            command = words.substring(2);
         }
         return command;
     }
