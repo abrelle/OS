@@ -32,10 +32,6 @@ public class Constants {
     public static final int FF_VALUE = 256;
     public static final int FFF_VALUE = 4096;
 
-    public static final int STATUS_FLAG_INDEX = 4;
-    public static final int CARRY_FLAG_INDEX = 5;
-    public static final int ZERO_FLAG_INDEX = 6;
-    public static final int OVERFLOW_FLAG_INDEX = 7;
 
     public enum FILE_SEG {
         $BDS,
@@ -45,5 +41,23 @@ public class Constants {
 
     public enum INTERRUPTION {
         HALT,
+    }
+
+
+    public enum FLAGS {
+        STATUS_FLAG_INDEX(3),
+        CARRY_FLAG_INDEX(2),
+        ZERO_FLAG_INDEX(1),
+        OVERFLOW_FLAG_INDEX(0);
+
+        private final int value;
+
+        FLAGS(final int newValue) {
+            value = newValue;
+        }
+
+        public int getValue() {
+            return value;
+        }
     }
 }

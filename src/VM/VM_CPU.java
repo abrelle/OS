@@ -1,5 +1,7 @@
 package VM;
 
+import static VM.Constants.FLAGS;
+
 public class VM_CPU {
     private final Word DS = new Word(Constants.DATA_SEGMENT);
     private final Word CS = new Word(Constants.CODE_SEGMENT);
@@ -8,10 +10,8 @@ public class VM_CPU {
     private final Word IC = new Word(0);
 
     private final Word SP = new Word(0);
-
-    private byte SR = 0;
-
     private final Memory memory;
+    private byte SR = 0;
 
     public VM_CPU(Memory memory) throws Exception {
         this.memory = memory;
@@ -65,7 +65,11 @@ public class VM_CPU {
         return SR;
     }
 
-    public void setSR(byte value){
-        this.SR = value;
+    public void setSR(FLAGS flag, int value) {
+        if (value == 1) {
+            SR |= (1 << flag.getValue());
+        } else if (value == 0) {
+            SR &= ~(1 << flag.getValue());
+        }
     }
 }
