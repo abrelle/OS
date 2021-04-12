@@ -1,15 +1,13 @@
 package VM;
 
-public class ByteWord {
-
+public class ByteWord
+{
     private Object value;
 
-
-    public ByteWord(int value)
+    public ByteWord(Object value)
     {
         this.value = value;
     }
-
 
     public Object getValue()
     {
