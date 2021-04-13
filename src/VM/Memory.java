@@ -26,7 +26,6 @@ public class Memory {
         }
         int block = virtualAddress / BLOCK_LENGTH;
         int word = virtualAddress % BLOCK_LENGTH;
-        System.out.println("Pimpaliukas");
         return vmMemory[block][word];
     }
 

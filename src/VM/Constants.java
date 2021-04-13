@@ -13,6 +13,8 @@ public class Constants {
     public static final int VIRTUAL_WORD_NUMBER = 8192; // 32*256
     public static final int VIRTUAL_MEMORY_WORD_NUMBER = 4096; // 16*256
 
+    // Page Table
+    public static final int PAGE_TABLE_ENTRIES = 16;
 
     // kur prasideda segmentai (kol kas i tris dalis parasyta)
 //    public static final int STACK_SEGMENT = 0; //wordlenght*blocklenght*blocknumber
