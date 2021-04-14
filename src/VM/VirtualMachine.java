@@ -49,9 +49,9 @@ public class VirtualMachine {
 
     private void uploadCode() {
         try {
-            Interpreter interpreter = new Interpreter("prog.txt");
+            Interpreter interpreter = new Interpreter("hard.txt");
             interpreter.read();
-            interpreter.interpreter();
+            interpreter.interpreter("programa1");
             ArrayList<String> dataSegment = interpreter.getDataSegment();
             for (int i = 0; i < dataSegment.size(); i++) {
                 cpu.setDS(new Word(i), new Word(dataSegment.get(i), Word.WORD_TYPE.NUMERIC));

@@ -4,37 +4,76 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import static VM.Constants.*;
+
+
 public class Interpreter {
     private Scanner scanner = null;
     private ArrayList<String> dataSegment = new ArrayList<String>(100);
     private ArrayList<String> codeSegment = new ArrayList<String>(100);
     private ArrayList<String> code = new ArrayList<String>(100);
 
-    Interpreter(String fileLocation)
-    {
+    Interpreter(String fileLocation) {
         try {
             File file = new File(fileLocation);
             scanner = new Scanner(file);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void read()
-    {
-        while (scanner.hasNextLine())
-        {
-            code.add(scanner.nextLine());
+    public void read() {
+        while (scanner.hasNext()) {
+            code.add(scanner.next());
         }
     }
 
-    public void interpreter() throws Exception {
-        if(!code.get(0).equals(Constants.FILE_SEG.$BDS.name())) {throw new Exception("NO DATSEG");}
-        int indexOfCodeSeg = code.indexOf(Constants.FILE_SEG.$BCS.name());
-        if(indexOfCodeSeg == -1){throw new Exception("NO CODSEG");}
-        dataSegment.addAll(code.subList(1,indexOfCodeSeg));
-        codeSegment.addAll(code.subList(indexOfCodeSeg+1,code.size()));
+    public void interpreter(String programName) throws Exception {
+        ArrayList<String> program;
+
+        if (code.contains(programName)
+                && commandExists(code.indexOf(programName) - 1, PROGRAM_NAME)
+                && commandExists(code.indexOf(programName) - 2, PROGRAM_BEGIN)) {
+            program = getProgram(programName);
+        } else {
+            throw new Exception("No program");
+        }
+
+        System.out.println(program.toString());
+        int indexOfDataSeg = 0;
+        int indexOfCodeSeg = 0;
+
+        if (program.contains(DATA_SEGMENT_NAME)) {
+            indexOfDataSeg = program.indexOf(DATA_SEGMENT_NAME);
+        }
+
+        if (program.contains(CODE_SEGMENT_NAME)) {
+            indexOfCodeSeg = program.indexOf(CODE_SEGMENT_NAME);
+        } else {
+            throw new Exception("NO CODSEG");
+        }
+
+        dataSegment.addAll(program.subList(indexOfDataSeg + 1, indexOfCodeSeg));
+        codeSegment.addAll(program.subList(indexOfCodeSeg + 1, program.size()));
     }
-    public ArrayList<String> getCodeSegment() { return codeSegment; }
-    public ArrayList<String> getDataSegment() { return dataSegment; }
+
+    public boolean commandExists(int index, String name) {
+        return code.get(index).equals(name);
+    }
+
+    public ArrayList<String> getProgram(String name) {
+        int nameIndex = code.indexOf(name);
+        ArrayList<String> programCode = new ArrayList<>(code.subList(nameIndex + 1, code.size()));
+        int indexOfEnd = programCode.indexOf(PROGRAM_END);
+
+        return new ArrayList<>(programCode.subList(0, indexOfEnd));
+    }
+
+    public ArrayList<String> getCodeSegment() {
+        return codeSegment;
+    }
+
+    public ArrayList<String> getDataSegment() {
+        return dataSegment;
+    }
 }
