@@ -20,6 +20,12 @@ public class Constants {
 //    public static final int CODE_SEGMENT = 17410; //(28+40)*256=17408+2;
 //    public static final long MAX_NUMBER = 262147; //(28+40+188)*256=65536+3;
 
+    public static final String PROGRAM_BEGIN = "$BGN";
+    public static final String PROGRAM_END = "$END";
+    public static final String PROGRAM_NAME = "$PRN";
+    public static final String CODE_SEGMENT_NAME = "$BCS";
+    public static final String DATA_SEGMENT_NAME = "$BDS";
+
     public static final int STACK_SEGMENT = 0; //wordlenght*blocklenght*blocknumber
     public static final int STACK_BLOCK_NUMBER = 6;
     public static final int DATA_SEGMENT = 1537; //6*256=1536+1;
@@ -32,11 +38,6 @@ public class Constants {
     public static final int FF_VALUE = 256;
     public static final int FFF_VALUE = 4096;
 
-
-    public enum FILE_SEG {
-        $BDS,
-        $BCS,
-    }
 
 
     public enum INTERRUPTION {
