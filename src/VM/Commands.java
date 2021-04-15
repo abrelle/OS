@@ -102,21 +102,17 @@ public class Commands {
 
     }
 
-    private void ML() {
+    private void ML() throws Exception {
         System.out.println("ML()");
-        try {
-            Word p1 = stack.pop();
-            Word p2 = stack.pop();
-            int op1 = p1.getNumber();
-            int op2 = p2.getNumber();
-            int result = op1 * op2;
-            if (result > Constants.MAX_WORD_SIZE_NUMBER) {
-                cpu.setSR(OVERFLOW_FLAG_INDEX, 1);
-            } else {
-                stack.push(new Word((int) result));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        Word p1 = stack.pop();
+        Word p2 = stack.pop();
+        int op1 = p1.getNumber();
+        int op2 = p2.getNumber();
+        int result = op1 * op2;
+        if (result > Constants.MAX_WORD_SIZE_NUMBER) {
+            cpu.setSR(OVERFLOW_FLAG_INDEX, 1);
+        } else {
+            stack.push(new Word((int) result));
         }
     }
 
@@ -180,7 +176,7 @@ public class Commands {
         }
     }
 
-    private void JH() {
+    private void JH() throws Exception {
         System.out.println("JH()");
         byte SR = cpu.getSR();
         if (((SR >> CARRY_FLAG_INDEX.getValue()) & 1) == 0 && ((SR >> ZERO_FLAG_INDEX.getValue()) & 1) == 0) {
@@ -188,7 +184,7 @@ public class Commands {
         }
     }
 
-    private void JE() {
+    private void JE() throws Exception {
         System.out.println("JE()");
         byte SR = cpu.getSR();
         if (((SR >> ZERO_FLAG_INDEX.getValue()) & 1) == 1) {
@@ -196,7 +192,7 @@ public class Commands {
         }
     }
 
-    private void JN() {
+    private void JN() throws Exception {
         System.out.println("JN()");
         byte SR = cpu.getSR();
         if (((SR >> ZERO_FLAG_INDEX.getValue()) & 1) == 0) {
@@ -204,10 +200,9 @@ public class Commands {
         }
     }
 
-    private void JL() {
+    private void JL() throws Exception {
         System.out.println("JL()");
-        try {
-            byte SR = cpu.getSR();
+        byte SR = cpu.getSR();
 
         if (((SR >> CARRY_FLAG_INDEX.getValue()) & 1) == 1 && ((SR >> ZERO_FLAG_INDEX.getValue()) & 1) == 0) {
             JUMP();
@@ -240,7 +235,7 @@ public class Commands {
         stack.push(word);
     }
 
-    private void LS(Word address) {
+    private void LS(Word address) throws Exception {
         System.out.println("SL()");
         Word word = stack.getPreviousElement(-1);
         memory.setWord(word, address);
@@ -251,28 +246,18 @@ public class Commands {
         stack.push(cpu.getIC());
     }
 
-    private void AND() {
+    private void AND() throws Exception {
         System.out.println("AND()");
-        try {
-            int op1 = stack.pop().getNumber();
-            int op2 = stack.pop().getNumber();
-            stack.push(new Word(op1 & op2));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        int op1 = stack.pop().getNumber();
+        int op2 = stack.pop().getNumber();
+        stack.push(new Word(op1 & op2));
     }
 
-    private void OR() {
+    private void OR() throws Exception {
         System.out.println("OR()");
-        try {
-            int op1 = stack.pop().getNumber();
-            int op2 = stack.pop().getNumber();
-            stack.push(new Word(op1 | op2));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        int op1 = stack.pop().getNumber();
+        int op2 = stack.pop().getNumber();
+        stack.push(new Word(op1 | op2));
     }
 
     private void XOR() throws Exception {
@@ -290,17 +275,13 @@ public class Commands {
         stack.push(new Word(~op1));
     }
 
-    private void GD() {
+    private void GD() throws Exception {
         System.out.println("GD");
-        try {
-            Word bufferSize = stack.getPreviousElement(-1);
-            Word startAddress = stack.getPreviousElement(-2);
-            //TODO: realioj masinoj nustatyti SI
-            for (int i = 0; i < bufferSize.getNumber(); ++i) {
-                System.out.println(memory.getWord(startAddress.add(i)));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        Word bufferSize = stack.getPreviousElement(-1);
+        Word startAddress = stack.getPreviousElement(-2);
+        //TODO: realioj masinoj nustatyti SI
+        for (int i = 0; i < bufferSize.getNumber(); ++i) {
+            System.out.println(memory.getWord(startAddress.add(i)));
         }
     }
 
