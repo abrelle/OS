@@ -1,11 +1,11 @@
-package PageTable;
+package PageTables;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import static VM.Constants.PAGE_TABLE_ENTRIES;
+import static VM.Constants.RM_PAGE_TABLE_ENTRIES;
 
-public class Table {
+public class RealMachineTable {
 
     int PTR = -1;
     ArrayList<Integer> virtualMachineBlock = new ArrayList<>();
@@ -13,39 +13,42 @@ public class Table {
     ArrayList<Boolean> isPageUsed = new ArrayList<>();
     ArrayList<Boolean> memoryType = new ArrayList<>();
 
-    public Table(ArrayList<Integer> virtualMachineBlock, ArrayList<Integer> realMachineBlock, ArrayList<Boolean> isPageUsed, ArrayList<Boolean> memoryType) {
-        for (int i = 0; i < PAGE_TABLE_ENTRIES; i++) {
-            virtualMachineBlock.add(i);
-            realMachineBlock.add(-1);
+    public RealMachineTable() {
+        for (int i = 0; i < RM_PAGE_TABLE_ENTRIES; i++) {
+            virtualMachineBlock.add(-1);
+            realMachineBlock.add(i);
             isPageUsed.add(false);
             memoryType.add(false);
         }
     }
 
-    public void giveRMBlock(ArrayList<Integer> realMachineBlock, ArrayList<Boolean> isPageUsed) {
-        for (int i = 0; i < PAGE_TABLE_ENTRIES; i++) {
+    public VirtualMachineTable giveRMBlocks() {
+        //todo kelioms virtualioms masinoms
+        VirtualMachineTable virtualMachineTable = new VirtualMachineTable();
+        for (int i = 0; i < virtualMachineTable.getSize(); i++) {
             Random random = new Random();
-            PTR = -1;
-            PTR = random.nextInt(PAGE_TABLE_ENTRIES);
-            while (realMachineBlock.contains(PTR)) {
-                PTR = random.nextInt(PAGE_TABLE_ENTRIES);
+            PTR = random.nextInt(RM_PAGE_TABLE_ENTRIES);
+            while (virtualMachineBlock.contains(PTR)) {
+                PTR = random.nextInt(RM_PAGE_TABLE_ENTRIES);
             }
-            realMachineBlock.set(i, PTR);
+            virtualMachineTable.setRMBlock(i, PTR);
+            virtualMachineBlock.set(i, PTR);
             isPageUsed.set(i, true);
         }
+        return virtualMachineTable;
     }
 
     public void printPageTable() {
         System.out.println("PAGE TABLE:");
         System.out.println("VAB  " + "RAB  " + "PN  " + "SWP  ");
-        for (int i = 0; i < PAGE_TABLE_ENTRIES; i++) {
+        for (int i = 0; i < RM_PAGE_TABLE_ENTRIES; i++) {
             System.out.println(realMachineBlock.get(i) + "  " + virtualMachineBlock.get(i) + "  "
                     + isPageUsed.get(i) + "  " + memoryType.get(i) + "  ");
         }
     }
 
     public void setRMBlock(int index, int element) {
-        if ((index >= 0 && index < PAGE_TABLE_ENTRIES) && (element >= 0 && element < PAGE_TABLE_ENTRIES)) {
+        if ((index >= 0 && index < RM_PAGE_TABLE_ENTRIES) && (element >= 0 && element < RM_PAGE_TABLE_ENTRIES)) {
             if (!isPageUsed.get(index)) {
                 realMachineBlock.set(index, element);
             } else {
@@ -58,8 +61,8 @@ public class Table {
 
     public void setAllBlock(int index, int setVirtual, int setReal, boolean setMemory) {
         if (!isPageUsed.get(index)) {
-            if ((index >= 0 && index < PAGE_TABLE_ENTRIES) && (setVirtual >= 0 && setVirtual < PAGE_TABLE_ENTRIES)
-                    && (setReal >= 0 && setReal < PAGE_TABLE_ENTRIES)) {
+            if ((index >= 0 && index < RM_PAGE_TABLE_ENTRIES) && (setVirtual >= 0 && setVirtual < RM_PAGE_TABLE_ENTRIES)
+                    && (setReal >= 0 && setReal < RM_PAGE_TABLE_ENTRIES)) {
                 virtualMachineBlock.set(index, setVirtual);
                 realMachineBlock.set(index, setReal);
                 memoryType.set(index, setMemory);
@@ -95,7 +98,7 @@ public class Table {
     }
 
     public void clearAllBlocks() {
-        for (int i = 0; i < PAGE_TABLE_ENTRIES; i++) {
+        for (int i = 0; i < RM_PAGE_TABLE_ENTRIES; i++) {
             realMachineBlock.set(i, -1);
             isPageUsed.set(i, false);
             memoryType.set(i, false);

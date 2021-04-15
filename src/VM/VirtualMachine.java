@@ -1,6 +1,7 @@
 package VM;
 
 import Memory.Memory;
+import PageTables.VirtualMachineTable;
 import RM.ChannelDevice;
 import RM.RealCPU;
 
@@ -15,6 +16,7 @@ public class VirtualMachine {
     private Memory memory = null;
     private Commands interpreter = null;
     private RealCPU realCPU = null;
+    private VirtualMachineTable virtualMachineTable;
 
     private int currentDSBlock = 0;
     private int currentSSBlock = 0;

@@ -8,13 +8,17 @@ public class Constants {
     public static final int BLOCK_LENGTH = 256;
     public static final int WORD_NUMBER = 65536; // 256*256
 
+    public static final int EXTERNAL_MEMORY_BLOCK_NUMBER = 512;
+    public static final int INTERNAL_MEMORY_BLOCK_NUMBER = 256;
+
     //VIRTUALIOS MASINOS ATMINTIS
     public static final int BLOCK_NUMBER = 32;
     public static final int VIRTUAL_WORD_NUMBER = 8192; // 32*256
     public static final int VIRTUAL_MEMORY_WORD_NUMBER = 4096; // 16*256
 
     // Page Table
-    public static final int PAGE_TABLE_ENTRIES = 16;
+    public static final int RM_PAGE_TABLE_ENTRIES = 256;
+    public static final int VM_PAGE_TABLE_ENTRIES = 32;
 
     // kur prasideda segmentai (kol kas i tris dalis parasyta)
 //    public static final int STACK_SEGMENT = 0; //wordlenght*blocklenght*blocknumber

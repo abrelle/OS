@@ -2,12 +2,14 @@ package RM;
 
 import Memory.Memory;
 
-public class ExternalMemory extends Memory {
-    static final int BLOCK_NUMBER = 512;
-    static final int BLOCK_LENGTH = 256;
-    private int WORD_NUMBER = BLOCK_NUMBER * BLOCK_LENGTH;
+import static VM.Constants.BLOCK_LENGTH;
+import static VM.Constants.EXTERNAL_MEMORY_BLOCK_NUMBER;
 
-    ExternalMemory(){
-        super(BLOCK_NUMBER,BLOCK_LENGTH);
+public class ExternalMemory extends Memory {
+
+    private int WORD_NUMBER = EXTERNAL_MEMORY_BLOCK_NUMBER * BLOCK_LENGTH;
+
+    ExternalMemory() {
+        super(EXTERNAL_MEMORY_BLOCK_NUMBER, BLOCK_LENGTH);
     }
 }

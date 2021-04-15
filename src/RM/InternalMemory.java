@@ -2,18 +2,20 @@ package RM;
 
 import Memory.Memory;
 
-public class InternalMemory extends Memory {
-    private static final int BLOCK_NUMBER = 256;// F
-    private static final int BLOCK_LENGTH = 256;// FF
-    private int WORD_NUMBER = BLOCK_NUMBER*BLOCK_LENGTH ;// FFF
+import static VM.Constants.BLOCK_LENGTH;
+import static VM.Constants.INTERNAL_MEMORY_BLOCK_NUMBER;
 
-    InternalMemory(){
-        super(BLOCK_NUMBER,BLOCK_LENGTH);
+public class InternalMemory extends Memory {
+
+    private int WORD_NUMBER = INTERNAL_MEMORY_BLOCK_NUMBER * BLOCK_LENGTH;// FFF
+
+    InternalMemory() {
+        super(INTERNAL_MEMORY_BLOCK_NUMBER, BLOCK_LENGTH);
     }
 
     public int findEmptyBlock() throws Exception {
-        for(int i = 0; i<BLOCK_NUMBER; i++){
-            if(checkIfBlockEmpty(i))return i;
+        for (int i = 0; i < INTERNAL_MEMORY_BLOCK_NUMBER; i++) {
+            if (checkIfBlockEmpty(i)) return i;
         }
         return -1;
     }
