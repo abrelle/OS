@@ -69,6 +69,16 @@ public class Interpreter {
         return new ArrayList<>(programCode.subList(0, indexOfEnd));
     }
 
+    public ArrayList<String> getAllProgramNames() {
+        ArrayList<String> programNames = new ArrayList<>();
+        for (int i = 0; i < code.size(); ++i) {
+            if (code.get(i).equals(PROGRAM_NAME)) {
+                programNames.add(code.get(++i));
+            }
+        }
+        return programNames;
+    }
+
     public ArrayList<String> getCodeSegment() {
         return codeSegment;
     }

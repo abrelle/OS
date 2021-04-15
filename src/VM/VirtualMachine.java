@@ -25,7 +25,7 @@ public class VirtualMachine {
     }
 
     private void doYourMagic() {
-        int i = 0;
+
         String command = "";
         while (true)
             try {
@@ -33,10 +33,7 @@ public class VirtualMachine {
                 command = memory.getCommand(cpu.getCS(new Word(0)), cpu.getIC());
                 interpreter.execute(command);
                 cpu.increaseIC();
-                i++;
-//                if(i == 3){
-//                    System.exit(3);
-//                }
+
                 if (command.contains("HALT")) {
                     memory.printInfo();
                     System.out.println("Status registras " + String.format("%08d", Integer.valueOf(Integer.toBinaryString(cpu.getSR()))));
