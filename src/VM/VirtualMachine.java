@@ -1,22 +1,34 @@
 package VM;
 
+import Memory.Memory;
+import RM.ChannelDevice;
+import RM.RealCPU;
+
 import java.util.ArrayList;
 
 import static VM.Constants.BLOCK_LENGTH;
-import static VM.Constants.VIRTUAL_MEMORY_BLOCK_NUMBER;
+import static VM.Constants.BLOCK_NUMBER;
 
 public class VirtualMachine {
-    private VM_CPU cpu = null;
+    private VirtualCPU cpu = null;
+    private ChannelDevice channelDevice;
     private Memory memory = null;
     private Commands interpreter = null;
+    private RealCPU realCPU = null;
 
-    VirtualMachine() {
+    private int currentDSBlock = 0;
+    private int currentSSBlock = 0;
+    private int currentCSBlock = 0;
+
+    //TODO: VirtualMachine(String sourceCode, RealCPU realCPU, int internalBlockBegin);
+    public VirtualMachine() {
         try {
-            memory = new Memory(VIRTUAL_MEMORY_BLOCK_NUMBER, BLOCK_LENGTH);
-            cpu = new VM_CPU(memory);
-            interpreter = new Commands(cpu, memory);
-            uploadCode();
+            memory = new Memory(BLOCK_NUMBER, BLOCK_LENGTH);
 
+            cpu = new VirtualCPU(memory);
+            interpreter = new Commands(cpu, memory);
+
+            uploadCode();
             doYourMagic();
 
         } catch (Exception e) {

@@ -1,10 +1,12 @@
 package VM;
 
+import Memory.Memory;
+
 public class Stack {
     private final Memory memory;
-    private final VM_CPU cpu;
+    private final VirtualCPU cpu;
 
-    Stack(Memory memory, VM_CPU cpu) {
+    Stack(Memory memory, VirtualCPU cpu) {
         this.memory = memory;
         this.cpu = cpu;
     }
