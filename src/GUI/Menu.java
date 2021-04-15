@@ -11,11 +11,10 @@ import java.util.ArrayList;
 
 public class Menu extends JPanel implements ActionListener {
 
-
-    private static final int WINDOW_WIDTH = 660;
+    private static final int WINDOW_WIDTH = 1200;
     private static final int WINDOW_HEIGHT = 660;
     GridBagConstraints gbc = new GridBagConstraints();
-    private JComboBox nameList;
+    private final JComboBox nameList;
 
     Menu(ArrayList<String> programNames) {
 
@@ -47,37 +46,6 @@ public class Menu extends JPanel implements ActionListener {
     public Dimension getPreferredSize() {
         return new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT);
     }
-
-
-//    @Override
-//    public void mouseClicked(MouseEvent e) {
-//
-//    }
-//
-//    @Override
-//    public void mousePressed(MouseEvent e) {
-////        if(e.getSource() == programOne)
-////        {
-////            game.changeStatus(IN_PROGRESS);
-////        }
-////        if(e.getSource() == programTwo)
-////        {
-////            try {
-////                new GameDataReader(game);
-////            } catch (IOException | ClassNotFoundException ex) {
-////                ex.printStackTrace();
-////            }
-////            if(!(game.getModel().getEnemy(0).getStatus()))
-////                game.getModel().deactivateEnemies();
-////            game.changeStatus(IN_PROGRESS);
-////        }
-////        if(e.getSource() == quitButton)
-////        {
-////            System.exit(0);
-////        }
-//
-//    }
-
 
     @Override
     public void actionPerformed(ActionEvent e) {
