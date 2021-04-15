@@ -2,7 +2,8 @@ package VM;
 
 import java.util.ArrayList;
 
-import static VM.Constants.WORD_LENGTH;
+import static VM.Constants.BLOCK_LENGTH;
+import static VM.Constants.VIRTUAL_MEMORY_BLOCK_NUMBER;
 
 public class VirtualMachine {
     private VM_CPU cpu = null;
@@ -11,7 +12,7 @@ public class VirtualMachine {
 
     VirtualMachine() {
         try {
-            memory = new Memory();
+            memory = new Memory(VIRTUAL_MEMORY_BLOCK_NUMBER, BLOCK_LENGTH);
             cpu = new VM_CPU(memory);
             interpreter = new Commands(cpu, memory);
             uploadCode();
@@ -25,22 +26,20 @@ public class VirtualMachine {
 
     private void doYourMagic() {
         int i = 0;
-        int shift = 0;
+        String command = "";
         while (true)
             try {
-                String command = memory.getCommand(cpu.getCS(cpu.getIC()), shift);
+
+                command = memory.getCommand(cpu.getCS(new Word(0)), cpu.getIC());
                 interpreter.execute(command);
                 cpu.increaseIC();
-                shift = (shift + 2) % WORD_LENGTH;
-                if(shift==0){
-                    cpu.increaseIC();
-                }
                 i++;
 //                if(i == 3){
-//                    System.exit(5);
+//                    System.exit(3);
 //                }
                 if (command.contains("HALT")) {
                     memory.printInfo();
+                    System.out.println("Status registras " + String.format("%08d", Integer.valueOf(Integer.toBinaryString(cpu.getSR()))));
                     return;
                 }
             } catch (Exception e) {
@@ -50,9 +49,9 @@ public class VirtualMachine {
 
     private void uploadCode() {
         try {
-            Interpreter interpreter = new Interpreter("prog.txt");
+            Interpreter interpreter = new Interpreter("hard.txt");
             interpreter.read();
-            interpreter.interpreter();
+            interpreter.interpreter("programa1");
             ArrayList<String> dataSegment = interpreter.getDataSegment();
             for (int i = 0; i < dataSegment.size(); i++) {
                 cpu.setDS(new Word(i), new Word(dataSegment.get(i), Word.WORD_TYPE.NUMERIC));

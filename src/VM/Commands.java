@@ -2,8 +2,7 @@ package VM;
 
 import java.util.Arrays;
 
-import static VM.Constants.CARRY_FLAG_INDEX;
-import static VM.Constants.ZERO_FLAG_INDEX;
+import static VM.Constants.FLAGS.*;
 
 public class Commands {
     private final
@@ -54,25 +53,27 @@ public class Commands {
             Word word = new Word(command.substring(2), Word.WORD_TYPE.NUMERIC);
             SM(word);
         } else if (command.contains("SV")) {
-            //PUSH();
+            Word word = new Word(command.substring(2), Word.WORD_TYPE.NUMERIC);
+            SV(word);
         } else if (command.contains("LS")) {
-            // pop();
+            Word word = new Word(command.substring(2), Word.WORD_TYPE.NUMERIC);
+            LS(word);
         } else if (command.contains("PO")) {
-            POP();
-        } else if (command.contains("SD")) {
-            // pop();
+            PO();
+        } else if (command.contains("SP")) {
+            SP();
         } else if (command.contains("GD")) {
-            // pop();
+            GD();
         } else if (command.contains("PD")) {
-            // pop();
+            PD();
         } else if (command.contains("AND")) {
-            // pop();
+            AND();
         } else if (command.contains("OR")) {
-            // pop();
+            OR();
         } else if (command.contains("XOR")) {
-            // pop();
+            XOR();
         } else if (command.contains("NOT")) {
-            // pop();
+            NOT();
         } else {
             System.out.print("Not found ");
         }
@@ -85,8 +86,8 @@ public class Commands {
             int op1 = stack.pop().getNumber();
             int op2 = stack.pop().getNumber();
             int result = op1 + op2;
-            if (result > Constants.MAX_WORD_SIZE_NUMBER ) {
-                System.out.println("AD Overflow");
+            if (result > Constants.MAX_WORD_SIZE_NUMBER) {
+                cpu.setSR(OVERFLOW_FLAG_INDEX, 1);
             } else {
                 stack.push(new Word(result));
             }
@@ -116,7 +117,7 @@ public class Commands {
             int op2 = p2.getNumber();
             long result = (long) op1 * op2;
             if (result > Constants.MAX_WORD_SIZE_NUMBER) {
-                System.out.println("ML Overflow");
+                cpu.setSR(OVERFLOW_FLAG_INDEX, 1);
             } else {
                 stack.push(new Word((int) result));
             }
@@ -130,9 +131,12 @@ public class Commands {
         try {
             int op1 = stack.pop().getNumber();
             int op2 = stack.pop().getNumber();
-            if (op2 == 0) throw new Exception("Division by zero");
-            int div = op1 / op2;
-            stack.push(new Word(div));
+            if (op2 == 0) {
+                cpu.setSR(ZERO_FLAG_INDEX, 1);
+            } else {
+                int div = op1 / op2;
+                stack.push(new Word(div));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -144,7 +148,7 @@ public class Commands {
             int op1 = stack.pop().getNumber();
             int result = op1 + 1;
             if (result > Constants.MAX_WORD_SIZE_NUMBER) {
-                System.out.println("INC overflow");
+                cpu.setSR(OVERFLOW_FLAG_INDEX, 1);
             } else {
                 stack.push(new Word(result));
             }
@@ -190,19 +194,18 @@ public class Commands {
     private void CM() {
         System.out.println("CM()");
         try {
-            Word w1 = stack.getPreviousElement(0);
-            Word w2 = stack.getPreviousElement(-1);
-            byte SR = cpu.getSR();
+            Word w1 = stack.getPreviousElement(-1);
+            Word w2 = stack.getPreviousElement(-2);
+
             if (w1.getNumber() == w2.getNumber()) {
-                SR |= (1 << ZERO_FLAG_INDEX);
-            } else if (w1.getNumber() < w2.getNumber()) {
-                SR |= ~(1 << ZERO_FLAG_INDEX);
-                SR |= ~(1 << CARRY_FLAG_INDEX);
+                cpu.setSR(ZERO_FLAG_INDEX, 1);
+            } else if (w1.getNumber() > w2.getNumber()) {
+                cpu.setSR(ZERO_FLAG_INDEX, 0);
+                cpu.setSR(CARRY_FLAG_INDEX, 0);
             } else {
-                SR |= ~(1 << ZERO_FLAG_INDEX);
-                SR |= (1 << CARRY_FLAG_INDEX);
+                cpu.setSR(ZERO_FLAG_INDEX, 0);
+                cpu.setSR(CARRY_FLAG_INDEX, 1);
             }
-            cpu.setSR(SR);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -212,7 +215,7 @@ public class Commands {
         System.out.println("JH()");
         try {
             byte SR = cpu.getSR();
-            if (((SR >> CARRY_FLAG_INDEX) & 1) == 0 && ((SR >> ZERO_FLAG_INDEX) & 1) == 0) {
+            if (((SR >> CARRY_FLAG_INDEX.getValue()) & 1) == 0 && ((SR >> ZERO_FLAG_INDEX.getValue()) & 1) == 0) {
                 JUMP();
             }
         } catch (Exception e) {
@@ -224,7 +227,7 @@ public class Commands {
         System.out.println("JE()");
         try {
             byte SR = cpu.getSR();
-            if (((SR >> ZERO_FLAG_INDEX) & 1) == 1) {
+            if (((SR >> ZERO_FLAG_INDEX.getValue()) & 1) == 1) {
                 JUMP();
             }
         } catch (Exception e) {
@@ -236,7 +239,7 @@ public class Commands {
         System.out.println("JN()");
         try {
             byte SR = cpu.getSR();
-            if (((SR >> ZERO_FLAG_INDEX) & 1) == 0) {
+            if (((SR >> ZERO_FLAG_INDEX.getValue()) & 1) == 0) {
                 JUMP();
             }
         } catch (Exception e) {
@@ -248,15 +251,18 @@ public class Commands {
         System.out.println("JL()");
         try {
             byte SR = cpu.getSR();
-            if (((SR >> CARRY_FLAG_INDEX) & 1) == 1 && ((SR >> ZERO_FLAG_INDEX) & 1) == 0) {
+
+            if (((SR >> CARRY_FLAG_INDEX.getValue()) & 1) == 1 && ((SR >> ZERO_FLAG_INDEX.getValue()) & 1) == 0) {
                 JUMP();
+
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void JUMP() {
+    private void JUMP() { //******* REIKIA PADUOTI VIENU MAZESNI POSLINKI. PVZ.: JEI KOMANDA YRA POSLINKIU 0006, TAI
+        //STEKO VIRSUI TURI BUT 0005
         System.out.println("JUMP()");
         try {
             cpu.setIC(stack.pop());
@@ -265,26 +271,17 @@ public class Commands {
         }
     }
 
-    private void GIC() {
-        System.out.println("GIC()");
+    private void SP() {
+        System.out.println("SP()");
         try {
-            //  cpu.setRL(cpu.getIC());
+            stack.push(cpu.getSP());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-//    private void PUSH() {
-//        System.out.println("PUSH()");
-//        try {
-//            stack.push();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-    private void POP() {
-        System.out.println("POP()");
+    private void PO() {
+        System.out.println("PO()");
         try {
             stack.pop();
         } catch (Exception e) {
@@ -296,58 +293,117 @@ public class Commands {
         System.out.println("SM()");
         try {
             stack.push(memory.getWord(cpu.getDS(wordshift)));
-            memory.printStack();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
-//    private void SWAP() {
-//        System.out.println("SWAP()");
-//        try {
-//            Word rh = cpu.getRH();
-//            cpu.setRH(cpu.getRL());
-//            cpu.setRL(rh);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+    private void SV(Word word) {
+        System.out.println("SV()");
+        try {
+            stack.push(word);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-//    private void LOADB(Word virtualAddress) {
-//        System.out.println("LOADB()");
-//        try {
-//            Word realVirtualAddress = cpu.getDS(virtualAddress);
-//            cpu.setRL(memory.getWord(realVirtualAddress));
-//            //  cpu.setC(Constants.C_VALUES.SYMBOLS);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    private void LOADW(Word virtualAddress) {
-//        System.out.println("LOADW()");
-//        try {
-//            Word realVirtualAddress = cpu.getDS(virtualAddress);
-//            cpu.setRL(memory.getWord(realVirtualAddress));
-//            // cpu.setC(Constants.C_VALUES.NUMBERS);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+    private void LS(Word address) {
+        System.out.println("SL()");
+        try {
+            Word word = stack.getPreviousElement(-1);
+            memory.setWord(word, address);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-//    private void SAVE(Word virtualAddress) {
-//        System.out.println("SAVE()");
-//        try {
-//            Word realVirtualAddress = cpu.getDS(virtualAddress);
-//            memory.setWord(cpu.getRL(), realVirtualAddress);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+    private void GIC() {
+        System.out.println("GIC()");
+        try {
+            stack.push(cpu.getIC());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-    private void GET(Word virtualAddress) {
-        System.out.println("GET()");
+    private void AND() {
+        System.out.println("AND()");
+        try {
+            int op1 = stack.pop().getNumber();
+            int op2 = stack.pop().getNumber();
+            stack.push(new Word(op1 & op2));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void OR() {
+        System.out.println("OR()");
+        try {
+            int op1 = stack.pop().getNumber();
+            int op2 = stack.pop().getNumber();
+            stack.push(new Word(op1 | op2));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void XOR() {
+        System.out.println("XOR()");
+        try {
+            int op1 = stack.pop().getNumber();
+            int op2 = stack.pop().getNumber();
+            stack.push(new Word(op1 ^ op2));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void NOT() {
+        System.out.println("NOT()");
+        try {
+            int op1 = stack.pop().getNumber();
+            stack.push(new Word(~op1));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void GD() {
+        System.out.println("GD");
+        try {
+            Word bufferSize = stack.getPreviousElement(-1);
+            Word startAddress = stack.getPreviousElement(-2);
+            //TODO: realioj masinoj nustatyti SI
+            for (int i = 0; i < bufferSize.getNumber(); ++i) {
+                System.out.println(memory.getWord(startAddress.add(i)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void PD() {
+        System.out.println("PD");
+        try {
+            Word bufferSize = stack.getPreviousElement(-1);
+            Word fromAddress = stack.getPreviousElement(-2);
+            Word toAddress = stack.getPreviousElement(-3);
+
+            //TODO: realioj masinoj nustatyti SI
+            for (int i = 0; i < bufferSize.getNumber(); ++i) {
+                Word w = memory.getWord(fromAddress.add(i));
+                memory.setWord(w, toAddress.add(i));
+            }
+
+            //stack.push();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void PUT(Word virtualAddress) {
@@ -368,11 +424,5 @@ public class Commands {
         System.out.println("HALT()");
         // cpu.setSI(Constants.INTERRUPTION.HALT);
     }
-//
-//    private void PRINTR() {
-//        System.out.println("PRINTR()");
-//        System.out.println("RL " + cpu.getRL().toString());
-//    }
-
 
 }

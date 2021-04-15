@@ -1,0 +1,28 @@
+$BGN
+$PRN programa2
+$BDS
+0004
+$BCS
+SM0000
+HALT**
+$END
+
+$BGN
+$PRN programa1
+$BDS
+0AC0
+0AB0
+0004
+$BCS
+SM0000
+SM0001
+CM****
+SV0005
+JL****
+AD****
+LS0009
+SV0000
+SV0003
+GD****
+HALT**
+$END

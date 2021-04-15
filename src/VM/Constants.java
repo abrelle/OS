@@ -22,6 +22,12 @@ public class Constants {
 //    public static final int CODE_SEGMENT = 17410; //(28+40)*256=17408+2;
 //    public static final long MAX_NUMBER = 262147; //(28+40+188)*256=65536+3;
 
+    public static final String PROGRAM_BEGIN = "$BGN";
+    public static final String PROGRAM_END = "$END";
+    public static final String PROGRAM_NAME = "$PRN";
+    public static final String CODE_SEGMENT_NAME = "$BCS";
+    public static final String DATA_SEGMENT_NAME = "$BDS";
+
     public static final int STACK_SEGMENT = 0; //wordlenght*blocklenght*blocknumber
     public static final int STACK_BLOCK_NUMBER = 6;
     public static final int DATA_SEGMENT = 1537; //6*256=1536+1;
@@ -34,19 +40,27 @@ public class Constants {
     public static final int FF_VALUE = 256;
     public static final int FFF_VALUE = 4096;
 
-    public static final int STATUS_FLAG_INDEX = 4;
-    public static final int CARRY_FLAG_INDEX = 5;
-    public static final int ZERO_FLAG_INDEX = 6;
-    public static final int OVERFLOW_FLAG_INDEX = 7;
-
-    public enum FILE_SEG {
-        DATSEG,
-        CODSEG,
-        STACKSEG
-    }
 
 
     public enum INTERRUPTION {
         HALT,
+    }
+
+
+    public enum FLAGS {
+        STATUS_FLAG_INDEX(3),
+        CARRY_FLAG_INDEX(2),
+        ZERO_FLAG_INDEX(1),
+        OVERFLOW_FLAG_INDEX(0);
+
+        private final int value;
+
+        FLAGS(final int newValue) {
+            value = newValue;
+        }
+
+        public int getValue() {
+            return value;
+        }
     }
 }
