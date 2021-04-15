@@ -8,6 +8,5 @@ public class Main {
         Interpreter interpreter = new Interpreter("hard.txt");
         interpreter.read();
         Frame.start(interpreter.getAllProgramNames());
-        new VirtualMachine();
     }
 }

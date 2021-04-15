@@ -1,6 +1,8 @@
 package GUI;
 
 
+import VM.VirtualMachine;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,6 +15,7 @@ public class Menu extends JPanel implements ActionListener {
     private static final int WINDOW_WIDTH = 660;
     private static final int WINDOW_HEIGHT = 660;
     GridBagConstraints gbc = new GridBagConstraints();
+    private JComboBox nameList;
 
     Menu(ArrayList<String> programNames) {
 
@@ -32,12 +35,12 @@ public class Menu extends JPanel implements ActionListener {
 
 
         gbc.insets = new Insets(10, 10, 10, 10);
-        JComboBox petList = new JComboBox<>(programNames.toArray());
-        petList.setSelectedIndex(0);
+        nameList = new JComboBox<>(programNames.toArray());
+        nameList.setSelectedIndex(0);
         gbc.gridx = 0;
         gbc.gridy = 10;
-        petList.addActionListener(this);
-        this.add(petList, gbc);
+        nameList.addActionListener(this);
+        this.add(nameList, gbc);
 
     }
 
@@ -74,25 +77,12 @@ public class Menu extends JPanel implements ActionListener {
 ////        }
 //
 //    }
-//
-//    @Override
-//    public void mouseReleased(MouseEvent e) {
-//
-//    }
-//
-//    @Override
-//    public void mouseEntered(MouseEvent e) {
-//
-//    }
-//
-//    @Override
-//    public void mouseExited(MouseEvent e) {
-//
-//    }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        String s = (String) nameList.getSelectedItem();
+        new VirtualMachine(s);
     }
 }
 

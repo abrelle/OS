@@ -9,9 +9,11 @@ public class VirtualMachine {
     private VM_CPU cpu = null;
     private Memory memory = null;
     private Commands interpreter = null;
+    private String programName;
 
-    VirtualMachine() {
+    public VirtualMachine(String name) {
         try {
+            programName = name;
             memory = new Memory(VIRTUAL_MEMORY_BLOCK_NUMBER, BLOCK_LENGTH);
             cpu = new VM_CPU(memory);
             interpreter = new Commands(cpu, memory);
@@ -48,7 +50,7 @@ public class VirtualMachine {
         try {
             Interpreter interpreter = new Interpreter("hard.txt");
             interpreter.read();
-            interpreter.interpreter("programa1");
+            interpreter.interpreter(programName);
             ArrayList<String> dataSegment = interpreter.getDataSegment();
             for (int i = 0; i < dataSegment.size(); i++) {
                 cpu.setDS(new Word(i), new Word(dataSegment.get(i), Word.WORD_TYPE.NUMERIC));
