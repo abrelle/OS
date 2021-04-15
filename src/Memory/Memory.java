@@ -8,10 +8,10 @@ import java.util.Arrays;
 import static VM.Constants.*;
 
 public class Memory{
-    private int BLOCK_NUMBER = 0;
-    private int BLOCK_LENGTH = 0;
+    private int BLOCK_NUMBER;
+    private int BLOCK_LENGTH;
     private int WORD_NUMBER = 0;
-    private Word[][] memory = null;
+    private Word[][] memory;
 
     public Memory(int BLOCK_NUMBER, int BLOCK_LENGTH) {
         this.BLOCK_LENGTH = BLOCK_LENGTH;
@@ -55,10 +55,10 @@ public class Memory{
         memory[block]= data;
     }
 
-//    public int getBlockBeginAddress(int block){
-//        return block*BLOCK_LENGTH;
-//    }
-//
+    public int getBlockBeginAddress(int block){
+        return block*BLOCK_LENGTH;
+    }
+
 //    public Word getWord(int virtualAddress) throws Exception {
 //        if (virtualAddress > Constants.VIRTUAL_WORD_NUMBER || virtualAddress < 0) {
 //            throw new Exception("Not existing address");

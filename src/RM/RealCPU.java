@@ -35,34 +35,34 @@ public class RealCPU {
         this.internalMemory = internal;
     }
 
-//    public void createMemoryTable(int internalBlockBegin, int externalBlockBegin) throws Exception {
-//        setPTR(new Word(internalMemory.getBlockBeginAddress(internalBlockBegin)));
-//        for (int i = 0; i < Constants.BLOCK_LENGTH; i++) {
-//            setPTRValue(i, new Word(externalMemory.getBlockBeginAddress(externalBlockBegin + i)));
-//        }
-//    }
+    public void createMemoryTable(int internalBlockBegin, int externalBlockBegin) throws Exception {
+        setPTR(new Word(internalMemory.getBlockBeginAddress(internalBlockBegin)));
+        for (int i = 0; i < Constants.BLOCK_LENGTH; i++) {
+            setPTRValue(i, new Word(externalMemory.getBlockBeginAddress(externalBlockBegin + i)));
+        }
+    }
 
-//    public void loadVirtualMachineMemory(int internalBlockBegin, int previousCSBlock,
-//                                         int previousDSBlock, int previousSSBlock) {
-//        try {
-//
-//            currentCSBlock = previousCSBlock;
-//            currentDSBlock = previousDSBlock;
-//            currentSSBlock = previousSSBlock;
-//
-//            setPTR(new Word(internalMemory.getBlockBeginAddress(internalBlockBegin)));
-//            setSS(new Word(internalMemory.getBlockBeginAddress(internalBlockBegin + 1)));
-//            setDS(new Word(internalMemory.getBlockBeginAddress(internalBlockBegin + 2)));
-//            setCS(new Word(internalMemory.getBlockBeginAddress(internalBlockBegin + 3)));
-//
-//            loadRegisterBlock(CS, currentCSBlock);
-//            loadRegisterBlock(DS, currentDSBlock);
-//            loadRegisterBlock(SS, currentSSBlock);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+    public void loadVirtualMachineMemory(int internalBlockBegin, int previousCSBlock,
+                                         int previousDSBlock, int previousSSBlock) {
+        try {
+
+            currentCSBlock = previousCSBlock;
+            currentDSBlock = previousDSBlock;
+            currentSSBlock = previousSSBlock;
+
+            setPTR(new Word(internalMemory.getBlockBeginAddress(internalBlockBegin)));
+            setSS(new Word(internalMemory.getBlockBeginAddress(internalBlockBegin + 1)));
+            setDS(new Word(internalMemory.getBlockBeginAddress(internalBlockBegin + 2)));
+            setCS(new Word(internalMemory.getBlockBeginAddress(internalBlockBegin + 3)));
+
+            loadRegisterBlock(CS, currentCSBlock);
+            loadRegisterBlock(DS, currentDSBlock);
+            loadRegisterBlock(SS, currentSSBlock);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public int[] saveVirtualMachineMemory() {
         try {
