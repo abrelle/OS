@@ -1,11 +1,17 @@
 package VM;
 
+import Memory.Memory;
+
 import static VM.Constants.FLAGS;
 
-public class VM_CPU {
+public class VirtualCPU {
     private final Word DS = new Word(Constants.DATA_SEGMENT);
     private final Word CS = new Word(Constants.CODE_SEGMENT);
     private final Word SS = new Word(Constants.STACK_SEGMENT);
+
+    //private final ByteWord TI = new ByteWord(Constants.INTERRUPTION.NONE);
+   // private final ByteWord PI = new ByteWord(Constants.INTERRUPTION.NONE);
+    //private final ByteWord SI = new ByteWord(Constants.INTERRUPTION.NONE);
 
     private final Word IC = new Word(0);
 
@@ -13,7 +19,10 @@ public class VM_CPU {
     private final Memory memory;
     private byte SR = 0;
 
-    public VM_CPU(Memory memory) throws Exception {
+    //private final RealCPU realCPU;
+
+    public VirtualCPU(Memory memory) throws Exception {
+        // TODO: RealCPU realCPU;
         this.memory = memory;
     }
 
@@ -60,6 +69,9 @@ public class VM_CPU {
     public Word getCS(Word virtualAddress) throws Exception {
         return new Word(CS.getNumber() + virtualAddress.getNumber());
     }
+
+//    public Constants.INTERRUPTION getSI() { return (Constants.INTERRUPTION) SI.getValue(); }
+//    public void setSI(Constants.INTERRUPTION flag) { SI.setValue(flag); }
 
     public byte getSR() {
         return SR;

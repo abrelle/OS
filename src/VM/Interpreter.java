@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 import static VM.Constants.*;
 
-
 public class Interpreter {
     private Scanner scanner = null;
     private ArrayList<String> dataSegment = new ArrayList<String>(100);

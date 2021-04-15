@@ -1,14 +1,19 @@
 package VM;
 
-
 import static VM.Constants.WORD_LENGTH;
 
 public class Word {
 
-    private WORD_TYPE type;
-    private int[] content = new int[4];
+    public enum WORD_TYPE
+    {
+        NUMERIC,
+        SYMBOLIC
+    }
 
-    Word(String word, WORD_TYPE type) throws Exception {
+    private WORD_TYPE type;
+    private int[] content = new int[WORD_LENGTH];
+
+    public Word(String word, WORD_TYPE type) throws Exception {
         this.type = type;
         if (type == WORD_TYPE.NUMERIC) createNumericWord(word);
         if (type == WORD_TYPE.SYMBOLIC) createSymbolicWord(word);
@@ -143,10 +148,5 @@ public class Word {
         wordArr[0] = new Word(value1);;
         wordArr[1] = new Word(value2);
         return wordArr;
-    }
-
-    public enum WORD_TYPE {
-        NUMERIC,
-        SYMBOLIC
     }
 }

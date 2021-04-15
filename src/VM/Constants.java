@@ -9,7 +9,7 @@ public class Constants {
     public static final int WORD_NUMBER = 65536; // 256*256
 
     //VIRTUALIOS MASINOS ATMINTIS
-    public static final int VIRTUAL_MEMORY_BLOCK_NUMBER = 32;
+    public static final int BLOCK_NUMBER = 32;
     public static final int VIRTUAL_WORD_NUMBER = 8192; // 32*256
     public static final int VIRTUAL_MEMORY_WORD_NUMBER = 4096; // 16*256
 
@@ -42,6 +42,7 @@ public class Constants {
 
     public enum INTERRUPTION {
         HALT,
+        NONE,
     }
 
 

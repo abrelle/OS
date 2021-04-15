@@ -1,23 +1,27 @@
-package VM;
+package Memory;
+
+import VM.Constants;
+import VM.Word;
 
 import java.util.Arrays;
 
 import static VM.Constants.*;
 
 public class Memory{
-    private int VIRTUAL_MEMORY_BLOCK_NUMBER = 0;
-    private int BLOCK_LENGTH = 0;
+    private int BLOCK_NUMBER;
+    private int BLOCK_LENGTH;
     private int WORD_NUMBER = 0;
-    private Word[][] vmMemory = null;
+    private Word[][] memory;
 
-    Memory(int VIRTUAL_MEMORY_BLOCK_NUMBER, int BLOCK_LENGTH) {
+    public Memory(int BLOCK_NUMBER, int BLOCK_LENGTH) {
         this.BLOCK_LENGTH = BLOCK_LENGTH;
-        this.VIRTUAL_MEMORY_BLOCK_NUMBER = VIRTUAL_MEMORY_BLOCK_NUMBER;
-        vmMemory = new Word[VIRTUAL_MEMORY_BLOCK_NUMBER][BLOCK_LENGTH];
-        for (int i = 0; i < VIRTUAL_MEMORY_BLOCK_NUMBER; i++) {
+        this.BLOCK_NUMBER = BLOCK_NUMBER;
+        //this.WORD_NUMBER = BLOCK_NUMBER*BLOCK_LENGTH;
+        memory = new Word[BLOCK_NUMBER][BLOCK_LENGTH];
+        for (int i = 0; i < BLOCK_NUMBER; i++) {
             for (int j = 0; j < BLOCK_LENGTH; j++) {
                 try {
-                    vmMemory[i][j] = new Word(0);
+                    memory[i][j] = new Word(0);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -26,33 +30,64 @@ public class Memory{
     }
 
     public boolean checkIfBlockEmpty(int block) throws Exception {
-        if (block>=VIRTUAL_MEMORY_BLOCK_NUMBER) throw new Exception("Not existing block");
+        if (block>=BLOCK_NUMBER) throw new Exception("Not existing block");
         for (int i=0;i<BLOCK_LENGTH;i++){
-            if(vmMemory[block][i].getNumber()!=0) return false;
+            if(memory[block][i].getNumber()!=0) return false;
         }
         return true;
     }
 
     public void cleanBlock(int block) throws Exception {
-        if (block>=VIRTUAL_MEMORY_BLOCK_NUMBER) throw new Exception("Not existing block");
+        if (block>=BLOCK_NUMBER) throw new Exception("Not existing block");
         for (int i=0;i<BLOCK_LENGTH;i++){
-            vmMemory[block][i].setWord(new Word(0));
+            memory[block][i].setWord(new Word(0));
         }
     }
 
     public Word[] getBlock(int block)throws Exception {
-        if (block>=VIRTUAL_MEMORY_BLOCK_NUMBER) throw new Exception("Not existing block");
-        return vmMemory[block];
+        if (block>=BLOCK_NUMBER) throw new Exception("Not existing block");
+        return memory[block];
     }
 
     public void setBlock(int block, Word[] data)throws Exception {
-        if (block>=VIRTUAL_MEMORY_BLOCK_NUMBER) throw new Exception("Not existing block");
+        if (block>=BLOCK_NUMBER) throw new Exception("Not existing block");
         if (data.length!=BLOCK_LENGTH) throw new Exception("BAD block length");
-        vmMemory[block]= data;
+        memory[block]= data;
     }
 
     public int getBlockBeginAddress(int block){
         return block*BLOCK_LENGTH;
+    }
+
+//    public Word getWord(int virtualAddress) throws Exception {
+//        if (virtualAddress > Constants.VIRTUAL_WORD_NUMBER || virtualAddress < 0) {
+//            throw new Exception("Not existing address");
+//        }
+//        int block = virtualAddress / BLOCK_LENGTH;
+//        int word = virtualAddress % BLOCK_LENGTH;
+//        return memory[block][word];
+//    }
+
+//    public int [] getBlockAndWord(long virtualAddress) throws Exception
+//    {
+//        if(virtualAddress<0 || virtualAddress>=WORD_NUMBER)
+//        {
+//            System.out.println(" - - - -" + virtualAddress);
+//            throw new Exception("Not existing address");
+//        }
+//        int block = (int) (virtualAddress/BLOCK_LENGTH);
+//        int word = (int) (virtualAddress % BLOCK_LENGTH);
+//        return  new int[]{block,word};
+//    }
+
+    public Word getWord(String virtualAddress) throws Exception {
+        int decimalAddress = Integer.parseInt(virtualAddress, 16);
+        return getWord(decimalAddress);
+    }
+
+    public Word getWord(Word virtualAddress) throws Exception
+    {
+        return getWord(virtualAddress.getNumber());
     }
 
     public Word getWord(int virtualAddress) throws Exception {
@@ -61,21 +96,10 @@ public class Memory{
         }
         int block = virtualAddress / BLOCK_LENGTH;
         int word = virtualAddress % BLOCK_LENGTH;
-        return vmMemory[block][word];
+        return memory[block][word];
     }
-
-    public Word getWord(String virtualAddress) throws Exception {
-        int decimalAddress = Integer.parseInt(virtualAddress, 16);
-        return getWord(decimalAddress);
-    }
-
-    public Word getWord(Word virtualAddress) throws Exception {
-        return getWord(virtualAddress.getNumber());
-    }
-
 
     public void setWord(Word word, int virtualAddress) throws Exception {
-
         getWord(virtualAddress).setWord(word);
     }
 
@@ -158,9 +182,9 @@ public class Memory{
     }
 */
     public void printInfo(){
-        for (int i = 0; i < VIRTUAL_MEMORY_BLOCK_NUMBER; i++) {
+        for (int i = 0; i < BLOCK_NUMBER; i++) {
             for (int j = 0; j < BLOCK_LENGTH; j++){
-                System.out.print(vmMemory[i][j].getHEXFormat() + " ");
+                System.out.print(memory[i][j].getHEXFormat() + " ");
             }
            System.out.println();
         }
@@ -168,7 +192,7 @@ public class Memory{
 
     public void printStack(){
         for (int i = 0; i < STACK_BLOCK_NUMBER; i++) {
-            System.out.println(Arrays.toString(vmMemory[i]));
+            System.out.println(Arrays.toString(memory[i]));
         }
     }
 
